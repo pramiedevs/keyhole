@@ -22,22 +22,24 @@
         z-index: 0;
     }
     .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('https://images.stockcake.com/public/6/2/6/62694af8-ff3f-42fe-a73b-ac07112ff501_large/intricate-wooden-door-stockcake.jpg') no-repeat center center;
-        background-size: cover;
-        opacity: 1;
-        transform: scale(1);
-        transition: opacity 2s ease, transform 2s ease;
-        z-index: 1;
-    }
-    .hidden {
-        opacity: 0;
-        transform: scale(1.3); /* Adjust scale factor as needed */
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.stockcake.com/public/6/2/6/62694af8-ff3f-42fe-a73b-ac07112ff501_large/intricate-wooden-door-stockcake.jpg') no-repeat center center;
+    background-size: cover;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 2s ease, transform 2s ease;
+    z-index: 1;
+    pointer-events: all; /* Ensure it can interact with clicks initially */
+}
+.hidden {
+    opacity: 0;
+    transform: scale(1.1);
+    pointer-events: none; /* Prevent interactions when hidden */
+}
     .main-content {
         position: relative;
         z-index: 0;
