@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+</head>
+<body>
+    <a href="./clases/index.html" onclick="selectClass('HIP-HOP', 'Clase Hip-Hop - Nivel Principiante', 'Vicky Branda', 'Programa:', [
+    { label: 'Clase 1 - Introducción al Hip Hop', duration: '1 minuto' },
+    { label: 'Clase 2 - Explicación Parte 1', duration: '13 minutos' }
+], [
+    {
+        src: 'https://i.vimeocdn.com/video/1019631883.jpg',
+        url: 'https://player.vimeo.com/video/1019631883',
+        alt: 'Coreografía (Hip Hop / INT-AV) (PARTE 1)',
+        label: 'Introducción al Hip Hop - Duración: 1 minuto'
+    },
+    {
+        src: 'https://i.vimeocdn.com/video/1019631884.jpg',
+        url: 'https://player.vimeo.com/video/1019631884',
+        alt: 'Explicación Parte 1',
+        label: 'Clase 2 - Explicación Parte 1 - Duración: 13 minutos'
+    }
+])">
+    <img class="img-clases" src="../src/hiphop.webp" loading="lazy" alt="Hip Hop Dance Style">
+</a>
+
+
+
+<script>
+    function selectClass(title, level, instructor, programTitle, programDetails, videos) {
+        sessionStorage.setItem('classData', JSON.stringify({
+            title,
+            level,
+            instructor,
+            programTitle,
+            programDetails,
+            videos // Keep videos as a separate property
+        }));
+    }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clases</title>
+    <link rel="stylesheet" href="./clases-styles.css">
+    <script src="userPic.js" defer></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+</head>
+<body class="no-scrollbar">
+    <div class="header">
+        <div class="logo">
+            <a href="../../index.html">
+                <img src="LOGOS_1.png">
+            </a>
+        </div>
+        <div>
+            <h1 class="titlefont"></h1> <!-- Dynamically set title -->
+        </div>
+        <nav class="menu titlefont">
+            <a href="./index.html">INICIO</a>
+            <a href="../clases.html">CLASES</a>
+            <a href="./nagidatta/nagidatta.html">NAGIDATTA</a>
+        </nav>
+        <div class="header-right">
+            <div id="user-info">
+                <img id="user-pic" alt="User Picture" style="border-radius: 50%; width: 60px; height: 60px;">
+            </div>  
+            <button class="titlefont" id="logout-button">Atrás</button>
+        </div>
+    </div>
+    
+    <div class="main-section">
+        <img class="main-img" id="mainImage" src="" alt="Main Image" style="display: none;">
+        <iframe id="mainVideo" style="display: none;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" src="" title="Main Vimeo Video"></iframe>
+    </div>
+
+    <div class="info-carousel-section">
+        <div class="video-info">
+            <div class="video-title"></div>
+            <br>
+            <div class="instructor"></div>
+            <div class="descripcion">
+                <h3>Programa:</h3>
+                <!-- List items will be added dynamically here -->
+            </div>
+        </div>
+        
+
+        <div class="carousel-section">
+            <div class="carousel-container">
+                <div class="carousel" id="carousel"></div> <!-- Dynamically populated carousel -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+const mainImage = document.getElementById('mainImage');
+const mainVideo = document.getElementById('mainVideo');
+const headerHeight = 120; // Fixed header height
+
+// Disable scroll restoration
+window.history.scrollRestoration = 'manual';
+
+// Fetch class data from sessionStorage
+const classData = JSON.parse(sessionStorage.getItem('classData'));
+
+if (classData) {
+    // Populate the title dynamically
+    document.querySelector('.titlefont').textContent = classData.title;
+
+    // Populate the video title dynamically
+    document.querySelector('.video-title').textContent = classData.videoTitle;
+
+    // Populate instructor name dynamically
+    const instructorElement = document.querySelector('.instructor');
+    if (instructorElement) {
+        instructorElement.textContent = classData.instructor || 'Instructor Desconocido';
+    }
+
+    // Populate description list dynamically
+    const programTitleElement = document.querySelector('.descripcion h3');
+    const programListElement = document.createElement('ul'); // Create a <ul> dynamically
+    if (programTitleElement) programTitleElement.textContent = classData.programTitle || 'Programa';
+
+    if (classData.programDetails) {
+        classData.programDetails.forEach(detail => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                ${detail.label}
+                <br>
+                <span>Duración: ${detail.duration || 'N/A'}</span>
+            `;
+            programListElement.appendChild(listItem);
+        });
+        document.querySelector('.descripcion').appendChild(programListElement); // Append the list to .descripcion
+    }
+
+    // Populate the carousel dynamically
+    const carouselContainer = document.querySelector('.carousel');
+    classData.videos.forEach((video, index) => {
+        const carouselItem = document.createElement('div');
+        carouselItem.className = 'carousel-item';
+
+        carouselItem.innerHTML = `
+            <img class="carousel-item-img" src="${video.src}" data-url="${video.url}" alt="${video.alt}">
+            <div class="carousel-label">${video.label}</div>
+        `;
+
+        carouselContainer.appendChild(carouselItem);
+
+        // Automatically load the first video
+        if (index === 0) {
+            loadVideo(carouselItem.querySelector('.carousel-item-img'));
+        }
+    });
+
+    // Clear sessionStorage after populating data
+    sessionStorage.removeItem('classData');
+} else {
+    console.error('No class data found.');
+}
+
+// Function to load the video and thumbnail for a specific carousel item
+function loadVideo(item) {
+    const videoUrl = item.getAttribute('data-url');
+    const videoId = videoUrl.split('/').pop(); // Extract the video ID
+
+    // Set the thumbnail image source using the video ID
+    const thumbnailUrl = `https://i.vimeocdn.com/video/${videoId}.jpg`; // Thumbnail URL
+    mainImage.src = thumbnailUrl; // Set thumbnail URL
+    mainImage.style.display = 'block'; // Show the thumbnail
+
+    // Set the iframe source to the video and show it
+    mainVideo.style.display = 'block';
+    mainVideo.src = videoUrl + "?autoplay=1&muted=1"; // Ensure autoplay and mute are included
+
+    // Smooth scroll to the main section, accounting for the header height
+    window.scrollTo({
+        top: document.querySelector('.main-section').offsetTop - headerHeight,
+        behavior: 'smooth',
+    });
+}
+
+// Video Scripts for carousel items
+document.querySelectorAll('.carousel-item-img').forEach((img) => {
+    img.addEventListener('click', () => {
+        loadVideo(img); // Load video when carousel item is clicked
+    });
+});
+
+    </script>
+    <footer>
+        Nagifooter
+    </footer>
+    
+</body>
+</html>
